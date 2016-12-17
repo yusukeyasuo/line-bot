@@ -6,6 +6,16 @@
  * @version     $Id$
  */
 
+use LINE\LINEBot\EchoBot\Dependency;
+use LINE\LINEBot\EchoBot\Route;
+use LINE\LINEBot\EchoBot\Setting;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-echo 'Hello World.';
+$setting = Setting::getSetting();
+$app = new Slim\App($setting);
+
+(new Dependency())->register($app);
+(new Route())->register($app);
+
+$app->run();
