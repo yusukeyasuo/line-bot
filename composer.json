@@ -1,0 +1,13 @@
+{
+  "name": "hirarin/line-bot",
+  "authors": [
+    {
+      "name": "Masatoshi Hiraoka",
+      "email": "hirarin@sonicmoov.com"
+    }
+  ],
+  "require": {
+    "php": "^5.6.0",
+    "linecorp/line-bot-sdk": "^1.0"
+  }
+}
