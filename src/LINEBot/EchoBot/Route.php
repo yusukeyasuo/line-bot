@@ -26,6 +26,7 @@ use LINE\LINEBot\Exception\InvalidEventRequestException;
 use LINE\LINEBot\Exception\InvalidSignatureException;
 use LINE\LINEBot\Exception\UnknownEventTypeException;
 use LINE\LINEBot\Exception\UnknownMessageTypeException;
+use Predis;
 
 class Route
 {
