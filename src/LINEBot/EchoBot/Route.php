@@ -66,7 +66,7 @@ class Route
                     continue;
                 }
 
-                $replyText = $reply_message = chat($event->getText());
+                $replyText = $reply_message = $this->chat($event->getText());
                 $logger->info('Reply text: ' . $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
