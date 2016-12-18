@@ -65,12 +65,15 @@ class Route
                     $logger->info('Non text message has come');
                     continue;
                 }
-
+                //Redisからcontextを取得
+                $from = $event->getFrom();
+                $redis = new Predis\Client(getenv('REDIS_URL'));
+                $context = $redis->get($from);
                 // docomo chatAPI
                 $api_key = getenv('DOCOMO_API_KEY') ?: '<your docomo api key>';
                 $api_url = sprintf('https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=%s', $api_key);
-                $req_body = array('utt' => $text);
-                $req_body['context'] = $event->getText();
+                $req_body = array('utt' => $event->getText());
+                $req_body['context'] = $context;
 
                 $headers = array(
                     'Content-Type: application/json; charset=UTF-8',
@@ -84,6 +87,9 @@ class Route
                     );
                 $stream = stream_context_create($options);
                 $res = json_decode(file_get_contents($api_url, false, $stream));
+
+                //contextをRedisに保存する
+                $redis->set($from, $res->context);
 
                 $replyText = $reply_message = $res->utt;
 
