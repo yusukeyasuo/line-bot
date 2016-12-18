@@ -68,6 +68,7 @@ class Route
 
                 $replyText = $event->getText();
                 $logger->info('Reply text: ' . $replyText);
+                error_log('Hello');
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
             }
