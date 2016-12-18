@@ -66,7 +66,27 @@ class Route
                     continue;
                 }
 
-                $replyText = $reply_message = $this->chat($event->getText());
+                // docomo chatAPI
+                $api_key = getenv('DOCOMO_API_KEY') ?: '<your docomo api key>';
+                $api_url = sprintf('https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=%s', $api_key);
+                $req_body = array('utt' => $text);
+                $req_body['context'] = $event->getText();
+
+                $headers = array(
+                    'Content-Type: application/json; charset=UTF-8',
+                );
+                $options = array(
+                    'http'=>array(
+                        'method'  => 'POST',
+                        'header'  => implode("\r\n", $headers),
+                        'content' => json_encode($req_body),
+                        )
+                    );
+                $stream = stream_context_create($options);
+                $res = json_decode(file_get_contents($api_url, false, $stream));
+
+                $replyText = $reply_message = $res->utt;
+
                 $logger->info('Reply text: ' . $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
                 $logger->info($resp->getHTTPStatus() . ': ' . $resp->getRawBody());
@@ -75,28 +95,5 @@ class Route
             $res->write('OK');
             return $res;
         });
-    }
-
-    function chat($send_message) {
-        // docomo chatAPI
-        $api_key = getenv('DOCOMO_API_KEY') ?: '<your docomo api key>';
-        $api_url = sprintf('https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=%s', $api_key);
-        $req_body = array('utt' => $text);
-        $req_body['context'] = $send_message;
-
-        $headers = array(
-            'Content-Type: application/json; charset=UTF-8',
-        );
-        $options = array(
-            'http'=>array(
-                'method'  => 'POST',
-                'header'  => implode("\r\n", $headers),
-                'content' => json_encode($req_body),
-                )
-            );
-        $stream = stream_context_create($options);
-        $res = json_decode(file_get_contents($api_url, false, $stream));
-
-        return $res->utt;
     }
 }
