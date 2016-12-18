@@ -16,8 +16,5 @@
     "psr-4": {
       "LINE\\": "src/"
     }
-  },
-  "scripts": {
-    "start": "./run.sh"
   }
 }
