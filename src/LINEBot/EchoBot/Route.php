@@ -114,7 +114,7 @@ class Route
                         )
                     );
                 $stream = stream_context_create($options);
-                $res = json_decode(file_get_contents($api_url, false, $stream));
+                $res = json_decode(file_get_contents($apiUrl, false, $stream));
 
                 $replyText = $reply_message = $res['result'];
 
