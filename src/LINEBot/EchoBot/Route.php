@@ -67,7 +67,7 @@ class Route
                     continue;
                 }
 
-/*
+///*
                 // docomo chatAPI
                 //Redisからcontextを取得
                 $from = $event->getReplyToken();
@@ -99,8 +99,9 @@ class Route
                 $redis->set($from, $res->context);
 
                 $replyText = $reply_message = $res->utt;
-*/
+//*/
 
+/*
                 // userlocal chatAPI
                 $apiKey = getenv('USERLOCAL_API_KEY') ?: '<your userlocal api key>';
                 $apiUrl = sprintf('https://chatbot-api.userlocal.jp/api/chat?message=%s&key=%s', $event->getText(), $apiKey);
@@ -118,6 +119,7 @@ class Route
                 error_log(print_r($res, true));
 
                 $replyText = $reply_message = $res->result;
+//*/
 
                 $logger->info('Reply text: ' . $replyText);
                 $resp = $bot->replyText($event->getReplyToken(), $replyText);
