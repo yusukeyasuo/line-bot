@@ -66,7 +66,7 @@ class Route
                     continue;
                 }
                 //Redisからcontextを取得
-                $from = $event->getFrom();
+                $from = $event->getReplyToken();
                 $redis = new Predis\Client(getenv('REDIS_URL'));
                 $context = $redis->get($from);
                 // docomo chatAPI
