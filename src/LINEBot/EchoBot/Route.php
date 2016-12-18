@@ -93,7 +93,6 @@ class Route
                 $res = json_decode(file_get_contents($api_url, false, $stream));
 
                 //contextをRedisに保存する
-                error_log(print_r($res->context, true));
                 $redis->set($from, $res->context);
 
                 $replyText = $reply_message = $res->utt;
